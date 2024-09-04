@@ -1,40 +1,43 @@
-/*
-Copyright © 2024 NAME HERE <EMAIL ADDRESS>
-
-*/
 package cmd
 
 import (
+	"encoding/csv"
 	"fmt"
+	"strings"
 
 	"github.com/spf13/cobra"
+	"github.com/vasujain275/go-basic-todo/utils"
 )
+
+var Priority int
 
 // addCmd represents the add command
 var addCmd = &cobra.Command{
 	Use:   "add",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "It adds the tasks to tasklist with priority",
+	Long: `This command add a specific task with its prioority to the tasklsit.
+	For example:
+		tasks add {taskname} -p 4
+		tasks add {taskname} --priority 4
+		`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("add called")
+		file, err := utils.GetFile()
+		if err != nil {
+			panic(err)
+		}
+		writer := csv.NewWriter(file)
+		writer.Flush()
+		name := strings.Join(args, " ")
+		priority := cmd.LocalFlags().Lookup("priority").Value.String()
+		fmt.Println(name, priority)
+		row := []string{name, priority}
+		writer.Write(row)
+		writer.Flush()
+		file.Close()
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(addCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// addCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// addCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	addCmd.Flags().IntVarP(&Priority, "priority", "p", 1, "Priority of the task")
 }
