@@ -1,4 +1,4 @@
-module github.com/vasujain275/go-basic-todo
+module github.com/vasujain275/tasks
 
 go 1.22.5
 

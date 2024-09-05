@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/vasujain275/go-basic-todo/cmd"
+	"github.com/vasujain275/tasks/cmd"
 )
 
 func main() {

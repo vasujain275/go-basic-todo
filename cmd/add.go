@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/spf13/cobra"
-	"github.com/vasujain275/go-basic-todo/utils"
+	"github.com/vasujain275/tasks/utils"
 )
 
 var Priority int
